@@ -80,3 +80,72 @@ String name3 = new String("minjicha"); //name1,2와  다른 String 객체 참조
 _[StringEqualsExample.java] 참고_
 
 * 참조를 잃은 String 객체는 JVM이 쓰레기 수집기를 구동시켜 메모리에서 자동 제거한다.
+
+## 배열 타입
+
+### 배열이란?
+
+* 배열은 같은 타입의 데이터를 연속된 공간에 나열시키고, 각 데이터에 인덱스(index)를 부여해 놓은 자료구조이다.
+
+* 배열은 같은 타입의 데이터만 저장할 수 있다.
+
+* 배열은 선언과 동시에 저장할 수 있는 데이터 타입이 결정된다.
+
+### 배열 선언
+
+* 배열을 사용하려면 배열 변수를 선언해야 하는데, 배열 변수 선언은 다음과 같다.
+
+```java
+int[] intArray; // 타입[] 변수;
+int intArray[]; // 타입 변수[];
+```
+
+### 값 목록으로 배열 생성
+
+* 배열 항목에 지정될 값의 목록을 이용하여 간단하게 배열 객체를 만들 수 있다.
+
+```java
+String[] names = {"minjicha", "홍길동", "java"};
+//데이터타입[] 변수 = {값0, 값1, 값2, ... };
+```
+
+_[ArrayCreateByValueListExample1.java] 참고_
+
+* 배열 변수를 이미 선언한 후에 다른 실행문에서 중괄호를 사용한 배열 생성은 허용되지 않는다.
+
+* 값 목록이 나중에 결정되는 상황이라면 new 연산자를 사용해서  값 목록을 지정한다.
+
+```java
+String names = null;
+names = new String[] {"minjicha", "홍길동", "java"};
+```
+
+_[ArrayCreateByValueListExample2.java] 참고_
+
+### new 연산자로 배열 생성
+
+* 값의 목록을 가지고 있지 않지만 배열을 미리 만들고 싶다면 new 연산자를 사용한다.
+
+* new 연산자로 배열을 처음 생성할 경우, 배열은 자동적으로 기본값으로 초기화된다.
+
+```java
+int[] intArray = new int[5];
+```
+
+_[ArrayCreateByNewExample.java] 참고_
+
+### 배열 길이
+
+* 배열의 길이란 배열에 저장할 수 있는 전체 항목 수를 말한다.
+
+* 배열의 길이를 얻으려면 length 필드를 읽으면 된다.
+
+```java
+int[] intArray = {10, 20, 30};
+int num = intArray.length;
+```
+
+_[ArraylengthExample.java] 참고_
+
+### 커맨드 라인 입력
+
