@@ -149,3 +149,163 @@ _[ArraylengthExample.java] 참고_
 
 ### 커맨드 라인 입력
 
+* main() 메소드에서 매개값인 String[] args의 필요성
+
+* 프로그램을 실행하면 JVM은 길이가 0인 String 배열을 생성하고 main() 메소드를 호출할 때 매개값으로 전달한다.
+
+* main() 메소드는 String[] args 매개 변수를 통해서 커맨드 라인에서 입력된 데이터의 수(배열의 길이)와 입력된 데이터(배열의 항목 값)을 알 수 있게 된다.
+
+### 다차원 배열
+
+* 행과 열로서 구성된 배열을 2차원 배열이라고 한다.
+
+```java
+int[][] scores = new int[2][3]; // 2(행) * 3(열)인 행렬을 만든다.
+```
+
+* 이 코드는 메모리에 세 개의 배열 객체를 생성한다.
+
+```java
+scores.length // 2
+scores[0].length // 3
+scores[1].length // 3
+```
+
+* 자바는 일차원 배열이 서로 연결된 구조로 다차원 배열을 구현하기 때문에 계단식 구조를 가질 수 있다.
+
+* 그룹화된 값 목록을 가지고 있다면 중괄호 안에 중괄호를 사용해서 값 목록을 나열한다.
+
+```java
+int[][] scores = { {95, 80}, {92, 96} };
+```
+
+_[ArrayInArrayExample.java] 참고_
+
+### 객체를 참조하는 배열
+
+* 참조 타입에서 == 연산자는 주소값을 비교한다.
+
+* String[] 배열에서 문자열을 비교하고 싶다면 equals() 메소드를 사용해야 한다.
+
+_[ArrayReferenceObjectExample.java] 참고_
+
+### 배열 복사
+
+* 배열 간의 항목 값들을 복사하려면 for문을 사용하거나 System.arraycopy() 메소드를 사용하면 된다.
+
+_[ArrayCopyByForExample.java] 참고_
+
+* System.arraycopy()를 호출하는 방법이다.
+
+    * src 매개값은 원본 배열
+    
+    * sPos는 원본 배열에서 복사할 항목의 시작 인덱스
+
+    * dest 매개값은 새 배열
+
+    * dPos는 새 배열에서 붙여넣을 시작 인덱스
+
+    * len은 복사할 개수
+
+```java
+System.arraycopy(Object src, int sPos, Object dest, int dPos, int len);
+```
+
+_[ArrayCopyExample.java] 참고_
+
+### 향상된 for문
+
+```java
+for( 타입변수 : 배열 ){ 실행문; }
+```
+
+* for문이 실행되면 배열에서 가져올 값이 있는지 판단하고, 값이 있다면 해당 값을 변수에 저장한 후, 실행문을 실행한다.
+
+* for문의 반복 횟수는 배열의 항목 수가 된다.
+
+_[AdvancedForExample.java] 참고_
+
+## 열거 타입
+
+* 한정된 값만을 갖는 데이터 타입이 열거타입이다.
+
+### 열거 타입 선언
+
+* 열거 타입을 선언하기 위해서는 열거 타입 이름으로 소스 파일을 생성해야 한다.
+
+* public enum 키워드는 열거 타입을 선언하기 위한 키워드이다.
+
+* 관례적으로 열거 상수는 모두 대문자로 작성한다.
+
+```java
+public enum Week {MONDAY, TUESDAY, WENDSDAY, ...}
+```
+
+_[Week.java] 참고_
+
+### 열거 타입 변수
+
+* 열거타입.열거상수로 사용된다.
+
+* 열거 상수는 열거 객체로 생성된다.
+
+```java
+Week today = Week.SUNDAY;
+```
+
+### 열거 객체의 메소드
+
+#### name() 메소드
+
+* name() 메소드는 열거 객체가 가지고 있는 문자열을 리턴한다.
+
+```java
+Week today = Week.SUNDAY;
+String name = today.name(); //name 변수에 SUNDAY 저장
+```
+
+#### ordinal() 메소드
+
+* ordinal() 메소드는 전체 열거 객체 중 몇 번째 열거 객체인지 알려준다.
+
+```java
+Week today = Week.SUNDAY;
+int ordinal = today.ordinal(); // 6을 리턴하여 ordinal 변수에 저장
+```
+
+#### compareTo() 메소드
+
+* compareTo() 메소드는 매개값으로 주어진 열거 객체를 기준으로 전후로 몇 번째 위치하는지를 비교한다.
+
+* 순번이 빠르다면 음수가, 느리다면 양수가 리턴된다.
+
+```java
+Week day1 = Week.MONDAY;
+Week day2 = Week.WEDNESDAY;
+int result1 = day1.compareTo(day2); // -2
+int result2 = day2.compareTo(day1); // 2
+```
+
+#### valueOf() 메소드
+
+* valueOf() 메소드는 매개값으로 주어지는 문자열과 동일한 문자열을 가지는 열거 객체를 리턴한다.
+
+* 외부로부터 문자열을 입력받아 열거 객체로 변환할 때 유용하게 사용할 수 있다.
+
+```java
+// weekday 변수는 Week.SATURDAY 열거 객체를 참조한다.
+Week weekDay = Week.valueOf("SATURDAY");
+```
+
+#### values() 메소드
+
+* values() 메소드는 열거 타입의 모든 열거 객체들을 배열로 만들어 리턴한다.
+
+```java
+Week[] days = Week.values();
+for(Week day : days){
+    System.out.println(day);
+}
+```
+
+_[EnumMethodExample.java] 참고_
