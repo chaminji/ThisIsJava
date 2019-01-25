@@ -11,6 +11,6 @@ public class Calculator3Example {
 		double result2 = myCalc.areaRectangle(10, 20);
 		
 		System.out.println("정사각형의 넓이 : " + result1);
-		System.out.println("직사각형의 넓이 : " + result2);ㄴ
+		System.out.println("직사각형의 넓이 : " + result2);
 	}
 }
