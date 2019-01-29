@@ -125,3 +125,161 @@ public class VeryVeryImportantPerson extends Member{
 _[Car.java] 참고_
 
 _[SportsCar.java] 참고_
+
+## protected 접근 제한자
+
+* protected는 public 과 default 접근 제한의 중간쯤에 해당한다.
+
+* 같은 패키지에서는 default와 가팅 접근 제한이 없지만 다른 패키지에서는 자식 클래스만 접근을 허용한다.
+
+## 타입 변환과 다형성
+
+* 다형성은 같은 타입이지만 실행 결과가 다양한 객체를 이용할 수 있는 성질을 말한다.
+
+* 자바는 다형성을 위해 타입 변환을 허용한다.
+
+### 자동 타입 변환(Promotion)
+
+* 자동적으로 타입 변환이 일어나는 것을 말한다.
+
+* 바로 위의 부모가 아니더라도 상속 계층에서 상위 타입이라면 자동 타입 변환이 일어날 수 있다.
+
+_[Promotion.java] 참고_
+
+_[Parent.java] 참고_
+
+_[Child.java] 참고_
+
+_[ChildExample.java] 참고_
+
+### 필드의 다형성
+
+* 주로 필드의 값을 다양화함으로써 실행 결과가 다르게 나오도록 구현한다.
+
+* 필드의 다형성은 필드의 타입은 변함이 없지만 실행 도중에 어떤 객체를 필드로 저장하느냐에 따라 실행결과가 달라질 수 있는 것을 의미한다.
+
+_[Tire.java] 참고_
+
+_[TireCar.java] 참고_
+
+_[HankookTire.java] 참고_
+
+_[KumhoTire.java] 참고_
+
+_[TireCarExample.java] 참고_
+
+### 하나의 배열로 객체 관리
+
+* 위의 코드에서 타이어 객체를 배열로 관리할 수 있도록 작성해본다.
+
+```java
+class Car{
+    Tire frontLeftTire = new Tire("앞왼쪽", 6);
+	Tire frontRightTire = new Tire("앞오른쪽", 2);
+	Tire backLeftTire = new Tire("뒤왼쪽", 3);
+	Tire backRightTire = new Tire("뒤오른쪽", 4);
+}
+//배열을 사용한다면
+class Car{
+    Tire[] tires = {
+        new Tire("앞왼쪽", 6),
+        new Tire("앞오른쪽", 2),
+        new Tire("뒤왼쪽", 3),
+        new Tire("뒤오른쪽", 4)
+    };
+}
+```
+
+### 매개 변수의 다형성
+
+* 주로 메소드를 호출 할 때 자동 타입 변환이 발생한다.
+
+* 메소드를 호출할 때에는 매개 변수의 타입과 동일한 매개값을 지정하는 것이 정석이지만, 매개값을 다양화하기 위해 매개 변수에 자식 타입 객체를 지정할 수도 있다.
+
+_[Vehicle.java] 참고_
+
+_[Driver.java] 참고_
+
+_[Bus.java] 참고_
+
+_[Taxi.java] 참고_
+
+_[DriverExample.java] 참고_
+
+### 강제 타입 변환(Casting)
+
+* 자식 타입이 부모 타입으로 자동 변환 후, 다시 자식 타입으로 변환할 때 강제 타입 변환을 사용할 수 있다.
+
+* 자동 변환 하면, 부모 타입에 선언된 필드와 메소드만 사용 가능하다는 제약 사항이 따른다.
+
+### 객체 타입 확인(instanceof)
+
+* 강제 타입 변환은 자식 타입이 부모 타입으로 변환되어 있는 상태에서만 가능하다.
+
+```java
+Parent parent = new Parent();
+Child child = (Child)parent; // 강제 타입 변환을 할 수 없다.
+```
+
+* 어떤 객체가 어떤 클래스의 인스턴스인지 확인하려면 instanceof 연산자를 사용할 수 있다.
+
+```java
+boolean result = 좌항(객체) instanceof 우항(타입)
+```
+
+_[InstanceofParent.java] 참고_
+
+_[InstanceofChild.java] 참고_
+
+_[InstanceofExample.java] 참고_
+
+## 추상 클래스
+
+### 추상 클래스의 개념
+
+* 추상(abstract)은 실체 간에 공통되는 특성을 추출한 것을 말한다.
+
+* 객체를 직접 생성할 수 있는 클래스를 실체 클래스라고 하고, 이 클래스들의 공통적인 특성을 추출해서 선언한 클래스를 추상 클래스라고 한다.
+
+* 추상 클래스와 실체 클래스는 상속의 관계를 가지고 있다. 추상 클래스가 부모이고 실체 클래스가 자식으로 구현되어 있다.
+
+* 추상 클래스는 실체 클래스의 공통되는 필드와 메소드를 추출해서 만들었기 때문에 new 연산자는 사용해서 인스턴스를 생성시키지 못한다.
+
+### 추상 클래스의 용도
+
+#### 첫 번쨰, 실체 클래스들의 공통된 필드와 메소드의 이름을 통일할 목적
+
+#### 두 번째, 실체 클래스를 작성할 때 시간을 절약
+
+### 추상 클래스 선언
+
+* 추상 클래스를 선언할 때는 클래스 선언에 abstract 키워드를 붙여야 한다.
+
+* 자식 객체가 생성될 때 super()를 호출해서 추상 클래스 객체를 생성하므로 생성자가 반드시 있어야 한다.
+
+_[Phone.java] 참고_
+
+_[SmartPhone.java] 참고_
+
+_[PhoneExample.java] 참고_
+
+### 추상 메소드와 오버라이딩
+
+* 추상 클래스에서 메소드의 선언만 통일화 하고 실행 내용은 실체 클래스마다 달라야 하는 경우가 있다.
+
+* 이런 경우에 추상 클래스는 추상 메소드를 선언할 수 있다.
+
+* 메소드의 선언부만 있고 실행 내용인 중괄호{} 가 없는 메소드이다.
+
+```java
+//선언 방법
+[public | protected] abstract 리턴타입 메소드명(매개변수, ...);
+```
+
+_[Animal.java] 참고_
+
+_[Dog.java] 참고_
+
+_[Cat.java] 참고_
+
+_[AnimalExample.java] 참고_
