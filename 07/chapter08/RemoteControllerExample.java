@@ -2,14 +2,16 @@ package chapter08;
 
 public class RemoteControllerExample {
 	public static void main(String[] args) {
-//		RomoteControl rc = new RomoteControl() {
-//			public void turnOn() {/*실행문*/}
-//			public void turnOff() {/*실행문*/}
-//			public void setVolume(int volume) {/*실행문*/}
-//		};	
+		RemoteControl rc = null;
 		
-		//Television과 Audio 객체 사용
-		/*rc = new Television();
-		rc = new Audio();*/
+		rc = new Television();
+		rc.turnOn();
+		rc.setMute(true);
+		
+		rc = new Audio();
+		rc.turnOn();
+		rc.setMute(true);
+		
+		RemoteControl.changeBattery();
 	}
 }
