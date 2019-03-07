@@ -10,5 +10,5 @@ public class BeepPrintExample3 {
 			try {Thread.sleep(500);}
 				catch(Exception e) {}
 		}
-	}
+	} 
 }

@@ -135,3 +135,140 @@ _[Calculator.java] 참고_
 _[User1.java] 참고_
 
 _[User2.java] 참고_
+
+## 스레드 상태
+
+* 스레드 객체 생성 후, start() 메소드를 호출하면 실행 대기 상태가 된다.
+
+* 실행 대기 상태에 있는 스레드 중에 선택된 스레드가 CPU를 점유하고 run() 메소드를 실행한다. 이때를 실행 상태라고 한다.
+
+* 스레드는 실행 대기 상태와 실행 상태를 번갈아 가며 run() 메소드를 조금씩 실행한다.
+
+* run() 메소드가 종료되면, 스레드의 실행은 멈추게 되고 이를 종료 상태라고 한다.
+
+* 실행 상태에서 일시 정지 상태로 가기도 하는데, 일시 정지 상태는 스레드가 실행할 수 없는 상태이다.
+
+* 이러한 스레드의 상태를 확인하려면 getState() 메소드를 사용한다.
+
+_[StatePrintThread.java] 참고_
+
+_[TargetThread.java] 참고_
+
+_[ThreadStateExample.java] 참고_
+
+## 스레드 상태 제어
+
+* 실행중인 스레드의 상태를 변경하는 것을 스레드 상태 제어라고 한다.
+
+### 주어진 시간동안 일시 정지(sleep())
+
+* sleep() 메소드를 호출한 스레드는 주어진 시간 동안 일시 정지 상태가 되고, 다시 실행 대기 상태로 돌아간다.
+
+### 다른 스레드에게 실행 양보(yield())
+
+* yield() 메소드를 호출한 스레드는 실행 대기 상태로 돌아가고 동일하거나 높은 우선순위를 갖는 다른 스레드가 실행 기회를 가질 수 있도록 해준다.
+
+### 다른 스레드의 종료 기다림(join())
+
+* 다른 스레드가 종료될 때까지 기다렸다가 실행해야 하는 경우가 발생할 수도 는데 이 때, join() 메소드를 사용할 수 있다.
+
+### 스레드 간 협업(wait(), notify(), notifyAll())
+
+* 두 개의 스레드를 교대로 번갈아가며 실행해야 할 경우, 공유 객체를 사용한다.
+
+* 공유 객체는 두 스레드가 작업할 내용을 각각 동기화 메소드로 구분해 놓는다.
+
+* 한 스레드가 작업을 완료하면 notify() 메소드를 호출해서 일시 정지 상태에 있는 다른 스레드를 실행 대기 상태로 만들고, 자신은 두번 작업을 하지 않도록 wait() 메소드를 호출하여 일시 정지 상태로 만든다.
+
+* notify()는 wait()에 의해 일시 정지된 스레드 중 한 개를, notifyAll()는 wait()에 의해 모든 스레드를 실행 대기 상태로 만든다.
+
+### 스레드의 안전한 종료(stop 플래그, interrupt())
+
+#### stop 플래그를 이용하는 방법
+
+* stop플래그를 이용해서 run() 메소드가 정상적으로 종료되도록 유도하는 것이 최선의 방법이다.
+
+```java
+public class XXXThread extends Thread {
+    private boolean stop; //stop 플래그 필드
+
+    public void run() {
+        while(!stop) {
+            스레드가 반복 실행하는 코드;
+        }
+        //스레드가 사용한 자원 정리
+    }
+}
+```
+
+#### interrupt() 메소드를 이용하는 방법
+
+* interrupt() 메소드는 스레드가 일시 정지 상태에 있을 때 InterruptedException 예외를 발생시키는 역할을 한다.
+
+* 이는 run() 메소드를 정상 종료 시킨다.
+
+## 데몬 스레드
+
+* 데몬 스레드는 주 스레드의 작업을 돕는 보조적인 역할을 수행하는 스레드이다.
+
+* 주 스레드가 종료되면 데몬 스레드는 강제적으로 자동 종료되는데, 그 이유는 주 스레드의 보조 역할을 수행하므로 주 스레드가 종료되면 데몬 스레드의 존재 의미가 없어지기 때문이다.
+
+* 주 스레드가 데몬이 될 스레드의 setDaemon(true)를 호출해주면 된다.
+
+```java
+public static void main(String[] args){
+    AutoSaveThread thread = new AutoSaveThread(); //데몬 스레드
+    thread.setDaemon(true);
+    thread.start();
+    ...
+}
+```
+
+## 스레드 그룹
+
+* 스레드 그룹은 관련된 스레드를 묶어서 관리할 목적으로 이용된다.
+
+* JVM이 실행되면 system 스레드 그룹을 만들고, JVM 운영에 필요한 스레드들을 생성해서 system 스레드 그룹에 포함시킨다.
+
+### 스레드 그룹 이름 얻기
+
+```java
+ThreadGroup group = Thread.currentThread().getThreadGroup();
+String groupName = group.getName();
+```
+
+_[ThreadInfoExample.java] 참고_
+
+### 스레드 그룹 생성
+
+```java
+ThreadGroup tg = new ThreadGroup(String name);
+ThreadGroup tg = new ThreadGroup(ThreadGroup parent, String name);
+```
+
+* 스레드 생성 시 부모 스레드 그룹을 지정하지 않으면 현재 스레드가 속한 그룹의 하위 그룹으로 생성된다.
+
+### 스레드 그룹의 일괄 interrupt()
+
+* interrupt() 메소드를 이용하면 그룹 내에 포함된 모든 스레드들을 일괄 interrupt 할 수 있다.
+
+## 스레드풀
+
+* 갑작스런 병렬 작업의 폭증으로 인한 스레드의 폭증을 막으려면 스레드풀을 사용해야 한다.
+
+* 스레드풀은 작업 처리에 사용되는 스레드를 제한된 개수만큼 정해 놓고 작업 큐에 들어오는 작업들을 하나씩 스레드가 맡아 처리한다.
+
+* Executors의 다양한 정적 메소드를 이용해서 ExecutorService 구현 객체를 만들 수 있는데, 이것이 스레드풀이다.
+
+### 스레드풀 생성 및 종료
+#### 스레드풀 생성
+
+```java
+//ExecutorService 구현 객체
+ExecutorService executorService = Executors.newCachedThreadPool();
+//CPU 코어의 수만큼 최대 스레드를 사용하는 스레드풀 생성
+ExecutorService executorService = Executors.newFixedThreadPool(
+    Runtime.getRuntime().availableProcessors()
+);
+```
+
