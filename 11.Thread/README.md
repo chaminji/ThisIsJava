@@ -272,3 +272,43 @@ ExecutorService executorService = Executors.newFixedThreadPool(
 );
 ```
 
+* 코어 스레드 개수와 최대 스레드 개수를 설정하고 싶다면, 직접 ThreadPoolExecutor 객체를 생성하면 된다.
+
+#### 스레드풀 종료
+
+* 종료를 위한 메소드로는 shutdown(), shutdownNow(), awaitTermination(long timeout, TimeUnit unit)이 있다.
+
+### 작업 생성과 처리 요청
+#### 작업 생성
+
+* 하나의 작업은 Runnable 또는 Callable 구현 클래스로 표현한다.
+
+    * Runnable의 run() 메소드는 리턴값이 없고, Callable의 call() 메소드는 리턴값이 있다.
+
+#### 작업 처리 요청
+
+* 이는 ExecutoService의 작업 큐에 Runnable 또는 Callable 객체를 넣는 행위를 말한다.
+
+* 작업 처리 요청을 위한 메소드로는 execute()와 submit()이 있다.
+
+    * execute()는 작업 처리 결과를 받지 못하고 submit()은 받을 수 있다.
+
+    * execute()는 작업 처리 도중 예외가 발생하면 스레드가 종료되고 해당 스레드는 스레드풀에서 제거되는 반면, submit()은 예외가 발생해도 스레드는 종료되지 않고 다음 작업을 위해 재사용된다.
+
+_[ExecuteExample.java] 참고_
+
+### 블로킹 방식의 작업 완료 통보
+
+* ExecutorService의 submit() 메소드는 매개값으로 준 Runnable 또는 Callable 작업을 스레드 풀의 작업 큐에 저장하고 즉시 Future 객체를 리턴한다.
+
+* Future 객체는 지연 완료 객체라고도 하는데 작업이 완료될 때까지 기다렸다가 최종 결과를 얻는데 사용된다.
+
+* Future의 get() 메소드를 호출하면 스레드가 작업을 완료할 때까지 블로킹 되었다가 작업을 완료하면 처리 결과를 리턴하는데 이것이 작업 완료 통보 방식이다.
+
+### 콜백 방식의 작업 완료 통보
+
+* 콜백이란 애플리케이션이 스레드에게 작업 처리를 요청한 후, 스레드가 작업을 완료하면 특정 메소드를 자동 실행하는 기법을 말한다.
+
+* 블로킹 방식은 작업 처리를 요청한 후 작업이 완료될 때까지 블로킹되지만, 콜백 방식은 작업 처리를 요청한 후 결과를 기다릴 필요 없이 다른 긴으을 수행할 수 있다.
+
+* ExecutorService는 콜백을 위한 별도의 기능을 제공하지 않는다. 대신 Runnable 구현 클래스를 작성할 때 콜백 기능을 구현할 수 있다.
